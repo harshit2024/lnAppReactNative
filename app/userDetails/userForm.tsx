@@ -1,8 +1,27 @@
-import React from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, ScrollView,Alert } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { Picker } from '@react-native-picker/picker'; // Correct import for Picker
 import { useRouter } from 'expo-router';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+// import { cities } from '@/constants/constant';
+export const cities =  [
+  'Mumbai',
+  'Pune',
+  'Bangalore',
+  'Delhi',
+  'Kolkata',
+  'Ludhiyana',
+  'Udaypur',
+  'Alwar',
+  'Jaipur',
+  'Chennai',
+  'Aurangaabad',
+  'Bharweli, Madhya Pradesh',
+  'Balaghat, Madhya Pradesh',
+  'Nagpur, Maharashtra',
+]
+
 
 interface FormData {
   name: string;
@@ -15,6 +34,63 @@ interface FormData {
 const UserForm: React.FC = () => {
   const { control, handleSubmit, formState: { errors }, getValues } = useForm<FormData>();
  const router = useRouter();
+
+ const [fileUri, setFileUri] = useState<any|null>(null); // State to store the selected file URI
+
+ const handleUploadOption = () => {
+   Alert.alert(
+     'Upload Options',
+     'Choose an upload option',
+     [
+       {
+         text: 'Camera',
+         onPress: () => {
+           launchCamera(
+             {
+               mediaType: 'photo', // or 'video' if you want video capture
+               includeBase64: false, // set to true if you want base64 image
+             },
+             (response) => handleResponse(response)
+           );
+         },
+       },
+       {
+         text: 'Gallery',
+         onPress: () => {
+           launchImageLibrary(
+             {
+               mediaType: 'photo',
+               includeBase64: false,
+             },
+             (response) => handleResponse(response)
+           );
+         },
+       },
+       {
+         text: 'Files',
+         onPress: () => {
+           // Implement file picker here if you want to support other file types
+           Alert.alert('File Picker is not implemented yet'); // Placeholder
+         },
+       },
+       { text: 'Cancel', style: 'cancel' },
+     ],
+     { cancelable: true }
+   );
+ };
+
+ const handleResponse = (response:any) => {
+  if (response.didCancel) {
+    console.log('User cancelled image picker');
+  } else if (response.error) {
+    console.log('ImagePicker Error: ', response.error);
+    Alert.alert('Error', 'An error occurred while picking the image.');
+  } else if (response.assets) {
+    const selectedAsset = response.assets[0]; // Get the first selected asset
+    setFileUri(selectedAsset.uri); // Store the file URI
+    console.log('Selected Asset: ', selectedAsset);
+  }
+};
 
   // Submit handler for both buttons
   const onSubmit = (data: FormData) => {
@@ -62,10 +138,13 @@ const UserForm: React.FC = () => {
                 style={styles.picker}
                 onValueChange={onChange}
               >
-                <Picker.Item label="Select City" value="" />
+                {cities.map((city:string) => (
+                  <Picker.Item key={city} label={city} value={city} />
+                ))}
+                {/* <Picker.Item label="Select City" value="" />
                 <Picker.Item label="22" value="22" />
                 <Picker.Item label="23" value="23" />
-                <Picker.Item label="24" value="24" />
+                <Picker.Item label="24" value="24" /> */}
               </Picker>
             </View>
           )}
@@ -130,6 +209,9 @@ const UserForm: React.FC = () => {
           name="organisationAddress"
         />
         {errors.organisationAddress && <Text style={styles.error}>Organisation Address is required</Text>}
+
+
+         {/* Upload Button */}
       </ScrollView>
 
       {/* Fixed Buttons: Cancel and Next */}
@@ -224,6 +306,24 @@ const styles = StyleSheet.create({
     color: '#007AFF', // Set the text color to #007AFF
     textAlign: 'center',
     fontWeight: 'bold',
+  },
+  uploadButton: {
+    backgroundColor: '#007BFF',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  uploadButtonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  selectedFileText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: '#333',
   },
 });
 

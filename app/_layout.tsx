@@ -73,11 +73,11 @@ export default function Layout() {
       />
       <Stack.Screen
         name="login"  // This corresponds to app/modal.tsx
-        options={{ title: 'Login',headerShown: true  }}
+        options={{ title: 'Login',headerShown: false  }}
       />
       <Stack.Screen
         name="otp"    // This corresponds to app/otp.tsx
-        options={{ title: 'Enter OTP',headerShown: true  }}
+        options={{ title: 'Enter OTP',headerShown: false  }}
       />
       
     </Stack>
