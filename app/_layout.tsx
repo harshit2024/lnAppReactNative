@@ -58,7 +58,8 @@
 //   );
 // }
 // app/_layout.tsx
-import { Stack } from 'expo-router';
+import { Stack } from "expo-router";
+import { recognizePrefixSuffix } from "react-native-reanimated/lib/typescript/reanimated2/animation/util";
 
 export default function Layout() {
   return (
@@ -68,8 +69,8 @@ export default function Layout() {
       }}
     >
       <Stack.Screen
-        name="index"  // This corresponds to app/index.tsx
-        options={{ title: 'Landing page',headerShown: true }}
+        name="index" // This corresponds to app/index.tsx
+        options={{ title: "Main page", headerShown: true }}
       />
       <Stack.Screen
         name="login"  // This corresponds to app/modal.tsx
