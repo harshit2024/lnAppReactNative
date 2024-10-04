@@ -73,17 +73,17 @@ export default function Layout() {
         options={{ title: "Main page", headerShown: true }}
       />
       <Stack.Screen
-        name="login" // This corresponds to app/modal.tsx
-        options={{ title: "Login", headerShown: true }}
+        name="login"  // This corresponds to app/modal.tsx
+        options={{ title: 'Login',headerShown: false  }}
       />
       <Stack.Screen
-        name="otp" // This corresponds to app/otp.tsx
-        options={{ title: "Enter OTP", headerShown: true }}
+        name="otp"    // This corresponds to app/otp.tsx
+        options={{ title: 'Enter OTP',headerShown: false  }}
       />
-      <Stack.Screen
+        <Stack.Screen
         name="bankcodes" // This corresponds to app/bankcodes.tsx
         options={{ title: "Bank Codes", headerShown: true }}
-      />
+        />
     </Stack>
   );
 }
