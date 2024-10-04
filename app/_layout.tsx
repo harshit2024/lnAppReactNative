@@ -79,7 +79,10 @@ export default function Layout() {
         name="otp"    // This corresponds to app/otp.tsx
         options={{ title: 'Enter OTP',headerShown: false  }}
       />
-      
+        <Stack.Screen
+        name="bankcodes" // This corresponds to app/bankcodes.tsx
+        options={{ title: "Bank Codes", headerShown: true }}
+        />
     </Stack>
   );
 }
